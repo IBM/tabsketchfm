@@ -152,7 +152,7 @@ All the datasets introduced in this paper are made available at the following DO
 
 <details>
 
-<summary>LakeBench</summary>
+<summary>LakeBench and Wiki-Join Search</summary>
 
 
 
