@@ -7,7 +7,8 @@
     <!-- <a href="https://huggingface.co/datasets/ibm/ACPBench">🤗 Dataset</a> -->
 </p>
 <p align="center">
-    <a href="#-getting-started">🔥 Getting Started</a> •
+    <a href="#-getting-started">🔥 Getting Started</a> • 
+    <a href="#-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
 </p>
@@ -159,11 +160,14 @@ Repository
 ```
 
 
-## Datasets
+## 🗃️ Datasets
 
 All the datasets introduced in this paper are made available at the following DOI.
-
 [![DOI:10.5281/zenodo.8014642](https://zenodo.org/badge/doi/10.5281/zenodo.8014642.svg)](https://doi.org/10.5281/zenodo.8014642) 
+<details>
+
+    <summary>LakeBench</summary>
+
 
 ### LakeBench
 
@@ -180,86 +184,8 @@ large knowledge graphs such as Wikidata. Specifically, LakeBench contains 8 Benc
 
 In addition to the the finetuning dataset above, we construct a search benchmark named [Wiki Join](https://doi.org/10.5281/zenodo.8014642) from Wikidata. The dataset contains two ground truth files, one with containment scores and another with Jaccard scores. In the paper, we only consider the ground truth with Jaccard score > 0.5. 
 
-## Replicate Results
+</details>
 
-**Lakebench Tasks**
-
-The [Getting Started](#getting-started) section above provides instructions to train and finetune the TabSketchFM model on LakeBench tasks. Refer to the [README in the baselines](./baselines/README.md) for instructions on finetuning the baseline approaches on LakeBench Tasks.
-
-**Search Tasks**
-
-For search tasks, we adopt retrieve and rerank process. First retreive candidate set for each query using a baseline approach and then rerank those candidates using the finetuned TabSketchFM. We evaluated two different search tasks: Union and Join. Below we provide the details of the datasets used, approaches used for retrieval and finetuned encoder used reranking. 
-
-
-
-1. Union
-
-
-* **Datasets**: TUS_small and SANTOS_small datasets (available [here](https://zenodo.org/records/7758091))
-* **Retrieval approaches**:  
-    1. [D<sup>3</sup>L](https://github.com/alex-bogatu/d3l)
-    2. [SANTOS](https://github.com/northeastern-datalab/santos)
-    3. [Starmie](https://github.com/megagonlabs/starmie)
-* **Rerank**: FinetunedTabSketchFM model on `tus-santos` benchmark from LakeBench.
-* **Pickle Format**: 
-
-    ```
-        { <query_table_name>:  
-                      [ <related_table_name_1>, 
-                        <related_table_name_2>, 
-                        ..., 
-                        <related_table_name_100> ], 
-        ....
-        }
-    ```
-
-
-
-
-
-2. Join
-
-
-     
-* **Dataset**: [Wiki-Join Search Dataset](#Wiki-Join-Search)
-* **Retrieval approach**: [LSH Forest](https://ekzhu.com/datasketch/lshforest.html)
-* **Rerank**: FinetunedTabSketchFM model on `wiki-jaccard` benchmark from LakeBench.
-* **Pickle format**: 
-    ```
-        { <query_table_name:query_col_index>:  
-                      [ <related_table_name_1:related_col_index_1>, 
-                        <related_table_name_2:related_col_index_2>, 
-                        ..., 
-                        <related_table_name_100:related_col_index_100> ], 
-        ....
-        }
-    ```
-
-
-Below are the steps to Retrieve and Rerank.
-1. Dumped the retrieval results from the baseline approaches as a dictionary to a `RETRIEVAL_PICKLE` file in the format mentioned above.   
-
-2. Dumped the ground truth of the search datasets in the same format to `GROUND_TRUTH_PICKLE` file.
-
-3. Preprocess the `datalake` folder and set `PREPROCESSED_DATALAKE_DIR` variable.
-
-4. Set variable `FINETUNED_CKPT_FILE` to the FinetunedTabSketchFM checkpoint.
-
-5. Run reranking.
-```
-RERANK_OUTPUT_PICKLE=./rerank_output.pickle
-# Set task to `union` or `join`
-TASK=union 
-python rerank.py --accelerator 'gpu' --devices 1  --strategy 'ddp'  --num_nodes 1  \
-        --datalake_dir ${PREPROCESSED_DATALAKE_DIR} \
-        --gt ${GROUND_TRUTH_PICKLE} \
-        --retrieval_pickle ${RETRIEVAL_PICKLE} \
-        --model_name_or_path ${PRETRAIN_MODEL_PATH} \
-        --finetuned_checkpoint ${FINETUNED_CKPT_FILE} \
-        --result_file ${RERANK_OUTPUT_PICKLE}\
-        --top-K 100 
-        --task ${TASK}
-```
 
 
 
