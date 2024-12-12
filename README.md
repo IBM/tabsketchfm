@@ -8,7 +8,7 @@
 </p>
 <p align="center">
     <a href="#-getting-started">🔥 Getting Started</a> • 
-    <a href="#-datasets">🗃️ Datasets</a> • 
+    <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
 </p>
@@ -144,7 +144,7 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
                
     ```
 
-## Code organization
+### Code organization
 
 ```bash
 Repository
