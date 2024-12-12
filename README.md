@@ -144,21 +144,6 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
                
     ```
 
-### Code organization
-
-```bash
-Repository
-├── README.md            # this file
-├── baselines/     # code used for the baseline comparison.
-|  ├── scripts/    
-|  └── src/        
-├──  tabsketchfm/   # Proposed approach
-|  ├── data_processing/   # data prep
-|  ├── models/   # trainer code
-|  └── utils/   
-└── scripts/  
-```
-
 
 ## 🗃️ Datasets
 
