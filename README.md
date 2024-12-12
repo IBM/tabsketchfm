@@ -7,7 +7,8 @@
     <!-- <a href="https://huggingface.co/datasets/ibm/ACPBench">🤗 Dataset</a> -->
 </p>
 <p align="center">
-    <a href="#-getting-started">🔥 Getting Started</a> •
+    <a href="#-getting-started">🔥 Getting Started</a> • 
+    <a href="#-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
 </p>
@@ -161,11 +162,13 @@ Repository
 
 ## 🗃️ Datasets
 
+All the datasets introduced in this paper are made available at the following DOI.
+[![DOI:10.5281/zenodo.8014642](https://zenodo.org/badge/doi/10.5281/zenodo.8014642.svg)](https://doi.org/10.5281/zenodo.8014642) 
+
 <details>
 
-<summary>All the datasets introduced in this paper are made available at the following DOI.</summary>
+<summary>LakeBench</summary>
 
-[![DOI:10.5281/zenodo.8014642](https://zenodo.org/badge/doi/10.5281/zenodo.8014642.svg)](https://doi.org/10.5281/zenodo.8014642) 
 
 
 ### LakeBench
@@ -182,6 +185,9 @@ large knowledge graphs such as Wikidata. Specifically, LakeBench contains 8 Benc
 ### Wiki-Join Search 
 
 In addition to the the finetuning dataset above, we construct a search benchmark named [Wiki Join](https://doi.org/10.5281/zenodo.8014642) from Wikidata. The dataset contains two ground truth files, one with containment scores and another with Jaccard scores. In the paper, we only consider the ground truth with Jaccard score > 0.5. 
+
+</details>
+
 
 
 
