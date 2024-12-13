@@ -2,12 +2,13 @@
 
 
 <p align="center">
-    <a href="https://ibm.github.io/tabsketchfm">🏠 Homepage</a> •
-    <a href="https://arxiv.org/abs/2407.01619">📄 Paper</a>
+<!--     <a href="https://ibm.github.io/tabsketchfm">🏠 Homepage</a> • -->
+    <a href="https://arxiv.org/abs/2407.01619">📄 Paper</a> • 
+        <a href="#-getting-started">🔥 Getting Started</a> 
     <!-- <a href="https://huggingface.co/datasets/ibm/ACPBench">🤗 Dataset</a> -->
 </p>
 <p align="center">
-    <a href="#-getting-started">🔥 Getting Started</a> • 
+
     <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
