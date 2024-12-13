@@ -7,8 +7,8 @@
         <a href="#-getting-started">🔥 Getting Started</a> 
     <!-- <a href="https://huggingface.co/datasets/ibm/ACPBench">🤗 Dataset</a> -->
 </p>
-<p align="center">
 
+<p align="center">
     <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
@@ -183,7 +183,7 @@ In addition to the the finetuning dataset above, we construct a search benchmark
 
 > [!IMPORTANT]
 >
-> Please pay attention to the disclosure below.
+> This code is released with CC BY-NC-ND 4.0 License. In addition to that, please pay attention to the public disclosure below.
 
 You are free to copy, modify and distribute this code only for the purpose of comparing this code to other code for scientific experimental purposes, where that distribution is not for a fee, nor does it accompany anything for which a fee is charged.
 
