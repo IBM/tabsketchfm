@@ -189,6 +189,6 @@ All content in these repositories including code has been provided by IBM under 
   title={TabSketchFM: Sketch-based Tabular Representation Learning for Data Discovery over Data Lakes},
   author={Aamod Khatiwada and Harsha Kokel and Ibrahim Abdelaziz and Subhajit Chaudhury and Julian Dolby and Oktie Hassanzadeh and Zhenhan Huang and Tejaswini Pedapati and Horst Samulowitz and Kavitha Srinivas},
   journal={IEEE ICDE},
-  year={2024}
+  year={2025}
 }
 ```
