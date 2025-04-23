@@ -188,7 +188,11 @@ We used the column embeddings from the finetuned cross-encoder for search. Below
 1. To extract embedding
 
 ```
-python ./extract_embeddings.py --model_name_or_path ${PRETRAIN_MODEL_PATH} --checkpoint ${FINETUNED_CHECKPOINT_PATH}  --data_dir ${SEARCH_DATA_LAKE_PROCESSED} --ground_truth ${GROUND_TRUTH_PICKLE_FILE}  --outfile ${EMBEDDING_PICKLE_FILE}
+python ./extract_embeddings.py --model_name_or_path ${PRETRAIN_MODEL_PATH} \
+            --checkpoint ${FINETUNED_CHECKPOINT_PATH}  \
+            --data_dir ${SEARCH_DATA_LAKE_PROCESSED} \
+            --ground_truth ${GROUND_TRUTH_PICKLE_FILE}  \
+            --outfile ${EMBEDDING_PICKLE_FILE}
 
 ```
 
@@ -197,13 +201,23 @@ python ./extract_embeddings.py --model_name_or_path ${PRETRAIN_MODEL_PATH} --che
 For union and subset search, we used a simplified version of Starmie by leveraging TabSketchFM's column embeddings to find matching tables based on nearest-neighbor column similarity, ranking candidates by number of matching columns and overall closeness. Refer the [paper](https://arxiv.org/abs/2407.01619) for details (Fig 6.). 
 
 ```
-python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_truth ${GROUND_TRUTH_PICKLE_FILE} --use_column_based_table_search True --k ${K} --data_dir ${SEARCH_DATA_LAKE} --outfile ${SEARCH_RESULT_PICKLE}
+python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} \
+            --ground_truth ${GROUND_TRUTH_PICKLE_FILE} \
+            --use_column_based_table_search True \
+            --k ${K} \
+            --data_dir ${SEARCH_DATA_LAKE} \
+            --outfile ${SEARCH_RESULT_PICKLE}
 ```
 
 
 For join search, 
 ```
-python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_truth ${GROUND_TRUTH_PICKLE_FILE} --use_column_based_table_search False --k ${K} --data_dir ${SEARCH_DATA_LAKE} --outfile ${SEARCH_RESULT_PICKLE}
+python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} \
+            --ground_truth ${GROUND_TRUTH_PICKLE_FILE} \
+            --use_column_based_table_search False \
+            --k ${K} \
+            --data_dir ${SEARCH_DATA_LAKE} \
+            --outfile ${SEARCH_RESULT_PICKLE}
 ```
 
 
