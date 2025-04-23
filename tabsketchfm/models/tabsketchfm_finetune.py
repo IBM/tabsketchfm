@@ -120,7 +120,7 @@ class FinetuneTabSketchFM(TabSketchFM):
     def __init__(self, model_name_or_path, config, learning_rate= 2e-05, adam_beta1=0.9, adam_beta2=0.999, adam_epsilon=1e-8, freeze=False, model_type='classification', task='fine-tune-table-similarity', num_labels=2):
         super().__init__(model_name_or_path, learning_rate, adam_beta1, adam_beta2, adam_epsilon)
         self.learning_rate = learning_rate
-        self.save_hyperparameters()
+        self.save_hyperparameters(ignore='config')
         self.config = config
         self.model_type = model_type
         self.config.num_labels = num_labels
