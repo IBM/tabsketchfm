@@ -2,12 +2,13 @@
 
 
 <p align="center">
-    <a href="https://ibm.github.io/tabsketchfm">🏠 Homepage</a> •
-    <a href="https://arxiv.org/abs/2407.01619">📄 Paper</a>
+<!--     <a href="https://ibm.github.io/tabsketchfm">🏠 Homepage</a> • -->
+    <a href="https://arxiv.org/abs/2407.01619">📄 Paper</a> • 
+        <a href="#-getting-started">🔥 Getting Started</a> 
     <!-- <a href="https://huggingface.co/datasets/ibm/ACPBench">🤗 Dataset</a> -->
 </p>
+
 <p align="center">
-    <a href="#-getting-started">🔥 Getting Started</a> • 
     <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
@@ -152,6 +153,8 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
 
 All the datasets introduced in this paper are made available at the following DOI.
 
+
+
 [![DOI:10.5281/zenodo.8014642](https://zenodo.org/badge/doi/10.5281/zenodo.8014642.svg)](https://doi.org/10.5281/zenodo.8014642) 
 
 <details>
@@ -204,6 +207,10 @@ python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_trut
 
 ## ✋ License 
 
+> [!IMPORTANT]
+>
+> This code is released with CC BY-NC-ND 4.0 License. In addition to that, please pay attention to the public disclosure below.
+
 You are free to copy, modify and distribute this code only for the purpose of comparing this code to other code for scientific experimental purposes, where that distribution is not for a fee, nor does it accompany anything for which a fee is charged.
 
 All content in these repositories including code has been provided by IBM under the associated restrictive-use software license and IBM is under no obligation to provide enhancements, updates, or support. IBM developers produced this code as a computer science project (not as an IBM product), and IBM makes no assertions as to the level of quality nor security, and will not be maintaining this code going forward.
@@ -215,6 +222,6 @@ All content in these repositories including code has been provided by IBM under 
   title={TabSketchFM: Sketch-based Tabular Representation Learning for Data Discovery over Data Lakes},
   author={Aamod Khatiwada and Harsha Kokel and Ibrahim Abdelaziz and Subhajit Chaudhury and Julian Dolby and Oktie Hassanzadeh and Zhenhan Huang and Tejaswini Pedapati and Horst Samulowitz and Kavitha Srinivas},
   journal={IEEE ICDE},
-  year={2024}
+  year={2025}
 }
 ```
