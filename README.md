@@ -10,7 +10,7 @@
 
 <p align="center">
     <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
-    <a href="#-datasets">🔍 Search experiments </a> • 
+    <a href="#-search-experiments">🔍 Search experiments </a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
 </p>
