@@ -10,6 +10,7 @@
 
 <p align="center">
     <a href="#%EF%B8%8F-datasets">🗃️ Datasets</a> • 
+    <a href="#-datasets">🔍 Search experiments </a> • 
     <a href="#-license">✋ License</a> •
     <a href="#-citation">📜 Citation</a>
 </p>
@@ -180,7 +181,7 @@ In addition to the the finetuning dataset above, we construct a search benchmark
 
 </details>
 
-# Search Experiments
+## 🔍 Search Experiments
 
 We used the column embeddings from the finetuned cross-encoder for search. Below are example commands to extract embeddings and performing Nearest Neighbors search.
 
@@ -203,6 +204,7 @@ python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_trut
 For join search, 
 ```
 python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_truth ${GROUND_TRUTH_PICKLE_FILE} --use_column_based_table_search False --k ${K} --data_dir ${SEARCH_DATA_LAKE} --outfile ${SEARCH_RESULT_PICKLE}
+```
 
 
 ## ✋ License 
