@@ -34,9 +34,11 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
 
 3. Pretraining
 
-    a. Preprocess the opendata for faster training
+    a. Preprocess the OpenData for faster training. 
 
-    Preprocess the opendata files for pre-training
+> [!NOTE]  
+> While we cannot redistribute the OpenData that we used for the pre-training. We provide the list of sources [here](./pretraining_tables.txt).
+ 
 
 
     ```
@@ -100,7 +102,7 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
             --random_seed 0 
    ```
 
-5. Finetune TabSketchFM on [LakeBench](./README.md#LakeBench) tasks.
+4. Finetune TabSketchFM on [LakeBench](./README.md#LakeBench) tasks.
 
     a. Download the lakebench datasets in the LAKEBENCH_HOME and preprocess the files using the following commands,
 
@@ -145,9 +147,11 @@ This repo contains code for the paper titled **TabSketchFM: Sketch-based Tabular
     ```
 
 
+
 ## 🗃️ Datasets
 
 All the datasets introduced in this paper are made available at the following DOI.
+
 [![DOI:10.5281/zenodo.8014642](https://zenodo.org/badge/doi/10.5281/zenodo.8014642.svg)](https://doi.org/10.5281/zenodo.8014642) 
 
 <details>
@@ -173,7 +177,29 @@ In addition to the the finetuning dataset above, we construct a search benchmark
 
 </details>
 
+# Search Experiments
 
+We used the column embeddings from the finetuned cross-encoder for search. Below are example commands to extract embeddings and performing Nearest Neighbors search.
+
+1. To extract embedding
+
+```
+python ./extract_embeddings.py --model_name_or_path ${PRETRAIN_MODEL_PATH} --checkpoint ${FINETUNED_CHECKPOINT_PATH}  --data_dir ${SEARCH_DATA_LAKE_PROCESSED} --ground_truth ${GROUND_TRUTH_PICKLE_FILE}  --outfile ${EMBEDDING_PICKLE_FILE}
+
+```
+
+2. To perform search in the embedding space
+
+For union and subset search, we used a simplified version of Starmie by leveraging TabSketchFM's column embeddings to find matching tables based on nearest-neighbor column similarity, ranking candidates by number of matching columns and overall closeness. Refer the [paper](https://arxiv.org/abs/2407.01619) for details (Fig 6.). 
+
+```
+python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_truth ${GROUND_TRUTH_PICKLE_FILE} --use_column_based_table_search True --k ${K} --data_dir ${SEARCH_DATA_LAKE} --outfile ${SEARCH_RESULT_PICKLE}
+```
+
+
+For join search, 
+```
+python ./embedding_search.py --embeddings ${EMBEDDING_PICKLE_FILE} --ground_truth ${GROUND_TRUTH_PICKLE_FILE} --use_column_based_table_search False --k ${K} --data_dir ${SEARCH_DATA_LAKE} --outfile ${SEARCH_RESULT_PICKLE}
 
 
 ## ✋ License 

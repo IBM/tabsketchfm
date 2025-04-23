@@ -58,7 +58,7 @@ class TabularDataset(Dataset):
 
 
 class TableSimilarityDataset(Dataset):
-    def __init__(self, data_dir, table_similarity, transform, concat=True, cols_equal=False, max_pos_embeddings=512, preprocessed_data=True, send_idx=False):
+    def __init__(self, data_dir, table_similarity, transform, concat=True, cols_equal=False, max_pos_embeddings=512, preprocessed_data=True, send_idx=False, extract_embedding=False):
         self.data_dir = data_dir
         self.table_similarity = table_similarity
         self.transform = transform
@@ -66,6 +66,7 @@ class TableSimilarityDataset(Dataset):
         self.send_idx = send_idx
         self.cols_equal = cols_equal
         self.max_pos_embeddings = int(max_pos_embeddings / 2)
+        self.extract_embedding = extract_embedding
         self.preprocessed_data = preprocessed_data
         print('Number of files:' + str(len(self.table_similarity)))
         self.csv_fname_to_df_hash_name = {}
@@ -77,7 +78,7 @@ class TableSimilarityDataset(Dataset):
             else:
                 onlyfiles = [join(self.data_dir, f) for f in os.listdir(self.data_dir) if isfile(join(self.data_dir, f))]
                 for fname_tab in onlyfiles: #TODO: should probably save that list in the same directory!!
-                    print('Reading: ', fname_tab)
+                    # print('Reading: ', fname_tab)
                     if not fname_tab.endswith('json.bz2'):
                         continue
                     with bz2.open(fname_tab) as f:
@@ -180,6 +181,9 @@ class TableSimilarityDataset(Dataset):
                         padding = torch.unsqueeze(padding, dim=0)
                     # stack CLS (key 0), table 1 name (key 1), SEP (key2), table 2 name (key 1), SEP (key 2) 
                     z = torch.stack((data1[key][0], data1[key][1], data1[key][2], data2[key][1], data2[key][2]))
+                    table1_start = z.size()[0]
+                    table1_end = torch.concat((z, data1[key][3:self.max_pos_embeddings])).size()[0]
+                    table2_start = torch.concat((z, data1[key][3:self.max_pos_embeddings], padding)).size()[0]
                     data[key] = torch.concat((z, data1[key][3:self.max_pos_embeddings], padding, data2[key][3:self.max_pos_embeddings]))
                 else:
                     # old style call: table1, all columns table2, all columns """
@@ -187,7 +191,10 @@ class TableSimilarityDataset(Dataset):
             else:
                 data[key] = (data1[key], data2[key])
 
-        if self.send_idx:
+        if self.extract_embedding:
+            # print("Extracting embedding ==== ", type(label), type(idx), type(len(t1cols)), type(len(t2cols)), type(table1_start), type(table1_end), type(table2_start), "====")
+            return data, label, idx, len(t1cols), len(t2cols), table1_start, table1_end, table2_start
+        elif self.send_idx:
             return data, label, idx 
         else:
             return data, label 
@@ -217,7 +224,7 @@ class TableColumnSearchDataset(TableSimilarityDataset):
         else:
             onlyfiles = [join(self.data_dir, f) for f in os.listdir(self.data_dir) if isfile(join(self.data_dir, f))]
             for fname_tab in onlyfiles: #TODO: should probably save that list in the same directory!!
-                print('Reading: ', fname_tab)
+                # print('Reading: ', fname_tab)
                 if not fname_tab.endswith('json.bz2'):
                     continue
                 with bz2.open(fname_tab) as f:
@@ -345,7 +352,7 @@ class TableSearchDataset(TableSimilarityDataset):
         else:
             onlyfiles = [join(self.data_dir, f) for f in os.listdir(self.data_dir) if isfile(join(self.data_dir, f))]
             for fname_tab in onlyfiles: #TODO: should probably save that list in the same directory!!
-                print('Reading: ', fname_tab)
+                # print('Reading: ', fname_tab)
                 if not fname_tab.endswith('json.bz2'):
                     continue
                 with bz2.open(fname_tab) as f:

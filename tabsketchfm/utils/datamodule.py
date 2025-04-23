@@ -3,6 +3,7 @@ import json
 import random
 from os import listdir
 from os.path import isfile, join
+import os
 
 import pytorch_lightning as pl
 from torch.utils.data.dataloader import DataLoader
@@ -13,7 +14,7 @@ from tabsketchfm import TableSimilarityDataset, TabularDataset
 class PretrainDataModule(pl.LightningDataModule):
     def __init__(self, tokenizer, data_dir, dataset, pad_to_max_length,
                 preprocessing_num_workers, overwrite_cache, max_seq_length, mlm_probability,
-                train_batch_size, val_batch_size, dataloader_num_workers, run_on_sample, sample_size, concat=False, cols_equal=False, preprocessed_data=False, drop_last=True, shuffle=True, send_idx=False):
+                train_batch_size, val_batch_size, dataloader_num_workers, run_on_sample, sample_size, concat=False, cols_equal=False, preprocessed_data=False, drop_last=False, shuffle=True, send_idx=False):
         super().__init__()
         self.data_dir = data_dir
         self.pad_to_max_length = pad_to_max_length
@@ -69,10 +70,10 @@ class PretrainDataModule(pl.LightningDataModule):
 
 
 class FinetuneDataModule(pl.LightningDataModule):
-    def __init__(self, tokenizer, data_dir, dataset, pad_to_max_length,
-                preprocessing_num_workers, overwrite_cache, max_seq_length, mlm_probability,
-                train_batch_size, val_batch_size, dataloader_num_workers, run_on_sample, sample_size, concat=False, cols_equal=False,
-                preprocessed_data = True, drop_last=True, shuffle=True, send_idx=False):
+    def __init__(self, tokenizer, data_dir, dataset, pad_to_max_length=False,
+                preprocessing_num_workers=1, overwrite_cache=False, max_seq_length=512, mlm_probability=0.15,
+                train_batch_size=32, val_batch_size=32, dataloader_num_workers=1, run_on_sample=False, sample_size=10, concat=False, cols_equal=False,
+                preprocessed_data = True, drop_last=False, shuffle=True, send_idx=False, extract_embedding=False):
         super().__init__()
         self.data_dir = data_dir
         self.pad_to_max_length = pad_to_max_length
@@ -93,17 +94,25 @@ class FinetuneDataModule(pl.LightningDataModule):
         self.drop_last = drop_last
         self.shuffle = shuffle
         self.send_idx = send_idx
-        print(f'Setting preprocessed_data: {preprocessed_data}')
+        self.extract_embedding = extract_embedding
+        # print(f'Setting preprocessed_data: {preprocessed_data}')
 
     def setup(self, stage):
-        with open(self.dataset) as f:
-            self.data_splits = json.load(f)
-        print(self.dataset)
-        print(len(self.data_splits))
+        if isinstance(self.dataset, str) and os.path.isfile(self.dataset):
+            with open(self.dataset) as f:
+                self.data_splits = json.load(f)
+        else:
+            assert isinstance(self.dataset, dict)
+            self.data_splits = self.dataset
+        # print(self.dataset)
+        # print(len(selçf.data_splits))
         if self.shuffle:
-            random.shuffle(self.data_splits['train'])
-            random.shuffle(self.data_splits['valid'])
-            random.shuffle(self.data_splits['test'])
+            if 'train' in self.data_splits:
+                random.shuffle(self.data_splits['train'])
+            if 'valid' in self.data_splits:
+                random.shuffle(self.data_splits['valid'])
+            if 'test' in self.data_splits:
+                random.shuffle(self.data_splits['test'])
 
     def train_dataloader(self):
         train_files = self.data_splits['train']
@@ -113,7 +122,8 @@ class FinetuneDataModule(pl.LightningDataModule):
         train_dataset = TableSimilarityDataset(data_dir=self.data_dir,
                                             table_similarity=train_files, transform=self.tokenizer.tokenize_function,
                                             concat=self.concat, cols_equal=self.cols_equal,
-                                            preprocessed_data = self.preprocessed_data)
+                                            preprocessed_data = self.preprocessed_data,
+                                            extract_embedding=self.extract_embedding, send_idx = self.send_idx)
         return DataLoader(dataset=train_dataset, batch_size=self.train_batch_size, drop_last=self.drop_last,
                         shuffle=self.shuffle, num_workers=self.dataloader_num_workers)
 
@@ -141,7 +151,8 @@ class FinetuneDataModule(pl.LightningDataModule):
         print('Number of validation samples: ', len(valid_files))
         valid_dataset = TableSimilarityDataset(data_dir=self.data_dir,
                                             table_similarity=valid_files, transform=self.tokenizer.tokenize_function,
-                                            cols_equal=self.cols_equal, concat=self.concat, preprocessed_data = self.preprocessed_data)
+                                            cols_equal=self.cols_equal, concat=self.concat, preprocessed_data = self.preprocessed_data,
+                                            extract_embedding=self.extract_embedding, send_idx = self.send_idx)
         return DataLoader(dataset=valid_dataset, shuffle = self.shuffle, batch_size=self.val_batch_size, drop_last=self.drop_last, num_workers=self.dataloader_num_workers)
 
     def test_dataloader(self):
@@ -150,6 +161,7 @@ class FinetuneDataModule(pl.LightningDataModule):
             test_files = self.pick_sample_files()
         test_dataset = TableSimilarityDataset(data_dir=self.data_dir,
                                             table_similarity=test_files, transform=self.tokenizer.tokenize_function,
-                                            cols_equal=self.cols_equal, concat=self.concat, preprocessed_data = self.preprocessed_data)
+                                            cols_equal=self.cols_equal, concat=self.concat, preprocessed_data = self.preprocessed_data,
+                                            extract_embedding=self.extract_embedding, send_idx = self.send_idx)
         return DataLoader(dataset=test_dataset, shuffle = self.shuffle, batch_size=self.train_batch_size, drop_last=self.drop_last,
                         num_workers=self.dataloader_num_workers)
